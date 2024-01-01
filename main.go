@@ -30,7 +30,7 @@ func (collection *Collection) Append(data ...string) {
 	}
 }
 
-func (collection *Collection) Search(data string) (bool, string) {
+func (collection *Collection) SearchByValue(data string) (bool, string) {
 	for key, value := range collection.data {
 		if value == data {
 			return true, key
@@ -39,10 +39,20 @@ func (collection *Collection) Search(data string) (bool, string) {
 	return false, ""
 }
 
+func (collection *Collection) SearchByKey(key string) (bool, string) {
+	_, ok := collection.data[key]
+	if ok {
+		return true, collection.data[key]
+	}
+	return false, ""
+}
+
 func main() {
 	myCollection := constructor()
 	myCollection.Append("hello")
 	myCollection.Append("name", "seiliaz")
-	status, key := myCollection.Search("seiliaz")
+	status, key := myCollection.SearchByValue("seiliaz")
 	fmt.Println(status, key)
+	anotherStatus, value := myCollection.SearchByKey("seiliaz")
+	fmt.Println(anotherStatus, value)
 }
