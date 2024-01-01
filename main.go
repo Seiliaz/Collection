@@ -41,16 +41,21 @@ func (collection *Collection) SearchByValue(val string) (bool, string) {
 
 func (collection *Collection) SearchByKey(key string) (bool, string) {
 	_, ok := collection.data[key]
-	if ok {
-		return true, collection.data[key]
+	var data string
+	if data = ""; ok {
+		data = collection.data[key]
 	}
-	return false, ""
+	return ok, data
+}
+
+func (collection *Collection) _remove(key string) {
+	delete(collection.data, key)
 }
 
 func (collection *Collection) RemoveByValue(val string) {
 	for key, value := range collection.data {
 		if value == val {
-			delete(collection.data, key)
+			collection._remove(key)
 		}
 	}
 }
@@ -58,20 +63,44 @@ func (collection *Collection) RemoveByValue(val string) {
 func (collection *Collection) RemoveByKey(key string) {
 	for field := range collection.data {
 		if field == key {
-			delete(collection.data, key)
+			collection._remove(key)
 		}
 	}
+}
+
+func (collection *Collection) _update(key, after string) {
+	collection.data[key] = after
+}
+
+func (collection *Collection) UpdateEveryValue(before, after string) {
+	for key, value := range collection.data {
+		if value == before {
+			collection._update(key, after)
+		}
+	}
+}
+
+func (collection *Collection) UpdateByKey(key string, after string) {
+	for field := range collection.data {
+		if field == key {
+			collection._update(key, after)
+		}
+	}
+}
+
+func (collection *Collection) First() (bool, string) {
+	if len(collection.data) > 0 {
+		for _, value := range collection.data {
+			return true, value
+		}
+	}
+	return false, ""
 }
 
 func main() {
 	myCollection := constructor()
 	myCollection.Append("hello")
 	myCollection.Append("name", "seiliaz")
-	myCollection.Append("name", "nashmil")
-	status, key := myCollection.SearchByValue("seiliaz")
-	fmt.Println(status, key)
-	anotherStatus, value := myCollection.SearchByKey("seiliaz")
-	fmt.Println(anotherStatus, value)
-	myCollection.RemoveByKey("name")
+	myCollection.Append("another_name", "seiliaz")
 	fmt.Println(myCollection.data)
 }
