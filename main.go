@@ -30,9 +30,9 @@ func (collection *Collection) Append(data ...string) {
 	}
 }
 
-func (collection *Collection) SearchByValue(data string) (bool, string) {
+func (collection *Collection) SearchByValue(val string) (bool, string) {
 	for key, value := range collection.data {
-		if value == data {
+		if value == val {
 			return true, key
 		}
 	}
@@ -45,6 +45,14 @@ func (collection *Collection) SearchByKey(key string) (bool, string) {
 		return true, collection.data[key]
 	}
 	return false, ""
+}
+
+func (collection *Collection) RemoveByValue(val string) {
+	for key, value := range collection.data {
+		if value == val {
+			delete(collection.data, key)
+		}
+	}
 }
 
 func main() {
