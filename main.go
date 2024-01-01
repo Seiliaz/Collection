@@ -12,7 +12,6 @@ func constructor() Collection {
 }
 
 func (collection Collection) Append(data ...string) {
-	fmt.Println(len(data) == 1)
 	var key string
 	var value string
 	if len(data) == 1 {
@@ -26,7 +25,8 @@ func (collection Collection) Append(data ...string) {
 	if ok {
 		fmt.Println("the key is already taken and the value is", val)
 	} else {
-		collection.data[key] = value
+		fmt.Println("there we are!")
+		// collection.data[key] = value
 	}
 }
 
