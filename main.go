@@ -55,12 +55,23 @@ func (collection *Collection) RemoveByValue(val string) {
 	}
 }
 
+func (collection *Collection) RemoveByKey(key string) {
+	for field := range collection.data {
+		if field == key {
+			delete(collection.data, key)
+		}
+	}
+}
+
 func main() {
 	myCollection := constructor()
 	myCollection.Append("hello")
 	myCollection.Append("name", "seiliaz")
+	myCollection.Append("name", "nashmil")
 	status, key := myCollection.SearchByValue("seiliaz")
 	fmt.Println(status, key)
 	anotherStatus, value := myCollection.SearchByKey("seiliaz")
 	fmt.Println(anotherStatus, value)
+	myCollection.RemoveByKey("name")
+	fmt.Println(myCollection.data)
 }
